@@ -470,6 +470,11 @@ while true; do
         sed -i -r -e "/\{/a\ \ \"SDK_INT\": \"$SDKLevel\"," -e "/\{/a\ \ \"*.build.version.sdk\": \"$SDKLevel\"," "$Target"
     fi
 
+    # Remove extra comma
+    head -c -6 < "$Target" | (cat - ; echo '}') > "$Target.1"
+    mv "$Target.1" "$Target"
+    cat "$Target"
+
     # Kill GMS unstable to force new values
     echo "${NL}Killing GMS unstable process..."
     killall com.google.android.gms.unstable >/dev/null 2>&1
